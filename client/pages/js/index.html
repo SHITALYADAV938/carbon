@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Carbon Tracker</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-900 text-gray-100 font-sans">
+
+  <!-- Navbar -->
+  <header class="bg-gray-800 shadow-md fixed top-0 w-full z-50">
+    <div class="container mx-auto flex justify-between items-center py-4 px-6">
+      <div class="flex items-center gap-2">
+        <img src="https://cdn-icons-png.flaticon.com/512/2910/2910765.png" alt="Logo" class="w-8 h-8">
+        <span class="font-bold text-xl">Carbon Tracker</span>
+      </div>
+      <nav class="space-x-6">
+        <a href="#home" class="hover:text-green-400 transition">Home</a>
+        <a href="#calculator" class="hover:text-green-400 transition">Calculate</a>
+        <a href="#community" class="hover:text-green-400 transition">Community</a>
+        <a href="#reports" class="hover:text-green-400 transition">Reports</a>
+        <a href="#leaderboards" class="hover:text-green-400 transition">Leaderboards</a>
+        <a href="#login" class="hover:text-green-400 transition">Login</a>
+      </nav>
+      <button class="ml-4 p-2 rounded-full bg-gray-700 hover:bg-gray-600 transition">🌙</button>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="home" class="text-center py-32 bg-gradient-to-r from-green-800 via-green-900 to-gray-900">
+    <h1 class="text-5xl md:text-6xl font-extrabold mb-6">Track, Reduce, and Offset Your Carbon Footprint</h1>
+    <p class="text-lg md:text-xl mb-8 max-w-2xl mx-auto">Join our community in building a sustainable future. Calculate, visualize, and act on your CO₂ data with powerful, user-friendly tools designed for maximum impact.</p>
+    <a href="#calculator" class="inline-block bg-green-500 hover:bg-green-600 text-white font-semibold px-8 py-4 rounded-full text-lg shadow-lg transition">Start Calculating</a>
+  </section>
+
+  <!-- Quick Calculator -->
+  <section id="calculator" class="bg-gray-800 rounded-2xl shadow-xl p-10 mt-16 max-w-4xl mx-auto">
+    <h3 class="text-2xl font-bold text-green-400 mb-6">Quick Carbon Calculator</h3>
+    <form id="quickCalcForm" class="grid md:grid-cols-3 gap-6">
+      <div>
+        <label class="block text-gray-300 mb-2">Transport</label>
+        <select id="transport" class="w-full border rounded-lg p-3 bg-gray-700 text-gray-100">
+          <option value="car">Car</option>
+          <option value="bus">Bus</option>
+          <option value="flight">Flight</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-gray-300 mb-2">Distance (km)</label>
+        <input type="number" id="distance" class="w-full border rounded-lg p-3 bg-gray-700 text-gray-100" placeholder="e.g. 10">
+      </div>
+      <div>
+        <label class="block text-gray-300 mb-2">Electricity (kWh)</label>
+        <input type="number" id="electricity" class="w-full border rounded-lg p-3 bg-gray-700 text-gray-100" placeholder="e.g. 5">
+      </div>
+      <div class="md:col-span-3 text-center mt-6">
+        <button type="submit" class="bg-green-500 hover:bg-green-600 text-white px-8 py-3 rounded-full font-semibold shadow-lg transition">Calculate</button>
+      </div>
+    </form>
+    <p id="calcResult" class="mt-6 text-lg font-semibold text-green-400"></p>
+    <canvas id="resultChart" class="mt-8"></canvas>
+  </section>
+
+  <!-- Community Section -->
+  <section id="community" class="py-20 bg-gray-900">
+    <div class="max-w-5xl mx-auto px-6 text-center">
+      <h2 class="text-4xl font-bold text-green-400 mb-6">Community</h2>
+      <p class="text-gray-300 mb-10">Join challenges, share tips, and collaborate with others to reduce your carbon footprint.</p>
+      <div id="communityFeed" class="space-y-4 text-left"></div>
+    </div>
+  </section>
+
+  <!-- Reports Section -->
+  <!-- Reports & Downloads Section -->
+<section id="reports" class="py-20 bg-gray-800">
+  <div class="max-w-6xl mx-auto px-6">
+
+    <!-- Heading -->
+    <h2 class="text-4xl font-bold text-green-400 mb-10 text-center">📋 Reports & Downloads</h2>
+
+    <!-- Emission History -->
+    <div class="bg-gray-900 p-6 rounded-xl shadow-lg mb-12">
+      <h3 class="text-2xl font-semibold mb-4">📊 Emission History</h3>
+      <p class="text-gray-300 mb-4">Download your full activity log.</p>
+
+      <div class="overflow-x-auto mb-4">
+        <table class="w-full border border-gray-700 rounded-lg text-gray-300">
+          <thead class="bg-gray-700 text-green-400">
+            <tr>
+              <th class="py-3 px-4 text-left">Date</th>
+              <th class="py-3 px-4 text-left">Travel CO₂</th>
+              <th class="py-3 px-4 text-left">Electricity CO₂</th>
+              <th class="py-3 px-4 text-left">Food CO₂</th>
+              <th class="py-3 px-4 text-left">Total CO₂</th>
+            </tr>
+          </thead>
+          <tbody id="historyBody">
+            <tr>
+              <td colspan="5" class="text-center py-6">📄 No data yet</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Download Buttons -->
+      <div class="flex gap-4">
+        <button class="bg-green-500 hover:bg-green-600 px-6 py-2 rounded-lg text-white font-semibold">📄 Download PDF</button>
+        <button class="bg-green-500 hover:bg-green-600 px-6 py-2 rounded-lg text-white font-semibold">📊 Download Excel</button>
+      </div>
+    </div>
+
+    <!-- Monthly Reports -->
+    <div class="bg-gray-900 p-6 rounded-xl shadow-lg mb-12">
+      <h3 class="text-2xl font-semibold mb-4">📈 Monthly Reports & Insights</h3>
+      <p class="text-gray-300 mb-4">Export monthly totals and trends.</p>
+
+      <!-- Login Lock -->
+      <!-- <div class="bg-gray-800 p-6 rounded-lg text-center text-gray-300">
+        <p class="mb-4">🔒 Please log in to view monthly reports</p>
+        <a href="#login" class="bg-green-500 hover:bg-green-600 px-6 py-2 rounded-lg text-white font-semibold">Login / Sign Up</a>
+      </div> -->
+
+      <!-- Monthly Export Buttons -->
+      <div class="flex gap-4 mt-6 justify-center">
+        <button class="bg-green-500 hover:bg-green-600 px-6 py-2 rounded-lg text-white font-semibold">📄 Monthly PDF</button>
+        <button class="bg-green-500 hover:bg-green-600 px-6 py-2 rounded-lg text-white font-semibold">📊 Monthly Excel</button>
+      </div>
+    </div>
+
+    <!-- Certificate -->
+    <div class="bg-gray-900 p-6 rounded-xl shadow-lg text-center">
+      <h3 class="text-2xl font-semibold mb-4">🏆 Digital Carbon Footprint Certificate</h3>
+      <p class="text-gray-300 mb-6">Personalized with your username.</p>
+      <button class="bg-green-500 hover:bg-green-600 px-8 py-3 rounded-lg text-white font-semibold">🎖️ Download Certificate</button>
+    </div>
+
+  </div>
+</section>
+
+
+  <!-- Leaderboards Section -->
+  <!-- Leaderboards Section -->
+<section id="leaderboards" class="py-20 bg-gray-900">
+  <div class="max-w-5xl mx-auto px-6 text-center">
+    <h2 class="text-4xl font-bold text-green-400 mb-6">🏆 Gamified Eco-Challenges & Leaderboards</h2>
+    <p class="text-gray-300 mb-6">Top savers this month.</p>
+
+    <!-- Refresh Button -->
+    <button onclick="loadLeaderboard()" 
+      class="mb-6 bg-green-500 hover:bg-green-600 px-6 py-2 rounded-lg font-semibold text-white flex items-center gap-2 mx-auto">
+      🔄 Refresh Leaderboard
+    </button>
+
+    <!-- Leaderboard Table -->
+    <div class="overflow-x-auto">
+      <table class="w-full border border-gray-700 rounded-lg">
+        <thead class="bg-gray-800 text-green-400">
+          <tr>
+            <th class="py-3 px-4 text-left">Rank</th>
+            <th class="py-3 px-4 text-left">User</th>
+            <th class="py-3 px-4 text-left">Total CO₂ (kg)</th>
+          </tr>
+        </thead>
+        <tbody id="leaderboardBody" class="text-gray-300">
+          <tr>
+            <td colspan="3" class="text-center py-6">
+              🏆 No leaderboard data yet <br>
+              <span class="text-sm text-gray-400">Be the first to start tracking your carbon footprint!</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+
+  <!-- Login Section -->
+  <section id="login" class="py-20 bg-gray-900">
+    <div class="max-w-md mx-auto bg-gray-800 p-8 rounded-xl shadow-lg">
+      <h2 class="text-3xl font-bold text-green-400 mb-6 text-center">Login</h2>
+      <form>
+        <input type="email" placeholder="Email" class="w-full mb-4 p-3 rounded-lg bg-gray-700 text-gray-100" required>
+        <input type="password" placeholder="Password" class="w-full mb-6 p-3 rounded-lg bg-gray-700 text-gray-100" required>
+        <button class="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-lg font-semibold">Login</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="mt-16 text-center py-6 bg-gray-800 text-gray-400">
+    <p>© 2025 Carbon Tracker. Built for a sustainable tomorrow.</p>
+  </footer>
+
+  <!-- Script -->
+  <script>
+    const ctx = document.getElementById("resultChart").getContext("2d");
+    let chart;
+
+    document.getElementById("quickCalcForm").addEventListener("submit", function(e){
+      e.preventDefault();
+
+      const transport = document.getElementById("transport").value;
+      const distance = parseFloat(document.getElementById("distance").value) || 0;
+      const electricity = parseFloat(document.getElementById("electricity").value) || 0;
+
+      const transportFactor = transport === "car" ? 0.12 : transport === "bus" ? 0.05 : 0.25;
+      const total = (distance * transportFactor + electricity * 0.85).toFixed(2);
+
+      document.getElementById("calcResult").innerText = `Your footprint today: ${total} kg CO₂`;
+
+      if(chart) chart.destroy();
+      chart = new Chart(ctx, {
+        type: "pie",
+        data: {
+          labels: ["Transport", "Electricity"],
+          datasets: [{
+            data: [
+              distance * transportFactor,
+              electricity * 0.85
+            ],
+            backgroundColor: ["#16a34a", "#22c55e"]
+          }]
+        }
+      });
+    });
+  </script>
+<!-- Your external JS -->
+<script src="js/main.js"></script>
+
+
+</body>
+</html>
